@@ -1,0 +1,32 @@
+{
+  "name": "academia-ajedrez",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "build": "vite build",
+    "start": "node --env-file-if-exists=.env server/index.js",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "setup:engine": "node scripts/engine-assets.js"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^6.4.0",
+    "chess.js": "^1.4.0",
+    "react-chessboard": "^4.7.0",
+    "express": "^5.1.0",
+    "openai": "^6.0.0",
+    "zod": "^4.0.0",
+    "lucide-react": "^0.468.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.0",
+    "vitest": "^3.2.0",
+    "supertest": "^7.1.0",
+    "@playwright/test": "^1.58.0"
+  }
+}

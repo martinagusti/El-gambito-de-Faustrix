@@ -1,0 +1,119 @@
+.board-frame {
+  padding: 0 2.5% 17px;
+  perspective: 850px;
+}
+
+.board-plinth {
+  display: grid;
+  aspect-ratio: 1;
+  grid-template-columns: 6.25% 87.5% 6.25%;
+  grid-template-rows: 6.25% 87.5% 6.25%;
+  background: var(--board-art) center / contain no-repeat;
+  filter: drop-shadow(0 8px 6px #000b);
+}
+.board-plinth[data-view="perspective"] {
+  --board-tilt: 9deg;
+  transform: rotateX(var(--board-tilt));
+  filter: none;
+  border-radius: 2%;
+  box-shadow: 0 8px 10px -5px #000b;
+}
+
+.board-plinth[data-view="perspective"],
+.board-plinth[data-view="perspective"] .board-surface,
+.board-plinth[data-view="perspective"] .board-surface div,
+.board-plinth[data-view="perspective"] .piece-render {
+  transform-style: preserve-3d;
+}
+/* react-chessboard adds an inline perspective; the frame supplies the only camera. */
+.board-plinth[data-view="perspective"] .board-surface div[style*="perspective:"] {
+  perspective: none !important;
+}
+
+.board-frame:has([data-design="forja-del-dragon"]) { padding-top: clamp(8px, 2vh, 22px); }
+.board-plinth[data-design="forja-del-dragon"] {
+  position: relative;
+  background-image: none;
+}
+.board-plinth[data-design="forja-del-dragon"]::before,
+.board-plinth[data-design="forja-del-dragon"]::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  background: var(--board-art) center / 100% auto no-repeat;
+  pointer-events: none;
+}
+.board-plinth[data-design="forja-del-dragon"]::before {
+  bottom: 0;
+  height: 93.75%;
+  background-position: center bottom;
+}
+.board-plinth[data-design="forja-del-dragon"]::after {
+  top: 0;
+  height: 6.25%;
+  background-position: center top;
+  transform: scaleY(1.55);
+  transform-origin: center bottom;
+}
+
+.board-surface { position: relative; grid-area: 2 / 2; min-width: 0; }
+.board-surface [data-square] { background-size: 100% 100%; }
+.board-ranks, .board-files {
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: #eaae4d;
+  font: 700 clamp(.61rem, 1.5vw, 1.37rem)/1 Georgia, serif;
+  text-shadow: 0 1px #482508, 0 -1px #ffe1a373, 0 2px 3px #000;
+}
+.board-ranks { grid-area: 2 / 1; grid-template-rows: repeat(8, 1fr); }
+.board-files { grid-area: 3 / 2; grid-template-columns: repeat(8, 1fr); }
+.piece-render { position: relative; display: block; pointer-events: none; }
+.piece-render::before, .piece-render::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+/* A soft cast shadow on the square and a darker contact shadow at the base. */
+.piece-render::before {
+  top: 82%;
+  left: 30%;
+  width: 66%;
+  height: 24%;
+  transform: rotate(16deg);
+  background: radial-gradient(ellipse, #21140783 10%, #21140740 43%, transparent 73%);
+}
+.piece-render::after {
+  top: 86%;
+  left: 24%;
+  width: 52%;
+  height: 15%;
+  background: radial-gradient(ellipse, #140d08bd 12%, #140d0875 45%, transparent 74%);
+}
+.piece {
+  position: relative;
+  z-index: 1;
+  display: block;
+  object-fit: contain;
+  max-width: none;
+  pointer-events: none;
+}
+
+.piece-render { --piece-width: 1.10; --piece-height: 1.06; }
+.piece-render[data-kind="P"] { --piece-width: 1.30; --piece-height: 1.17; }
+.piece-render[data-kind="R"] { --piece-width: 1.22; --piece-height: 1.13; }
+.piece-render .piece {
+  /* Anchor the enlargement at the sprite base (236/256 px). */
+  transform: translateY(46.1%) rotateX(calc(-1 * var(--board-tilt, 0deg))) translateY(-46.1%)
+    scale(1.24) translateY(calc(-5% + 42% * (1 - var(--piece-height))))
+    scale(var(--piece-width), var(--piece-height));
+}
+.piece-render::after {
+  transform: scaleX(var(--piece-width));
+}
+
+@media (max-width: 690px) {
+  .board-frame { perspective: 680px; padding-bottom: 10px; }
+  .board-plinth[data-view="perspective"] { --board-tilt: 6deg; }
+  .board-ranks, .board-files { font-size: .76rem; }
+}

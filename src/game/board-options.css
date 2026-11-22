@@ -1,0 +1,57 @@
+.settings-dialog {
+  width: min(760px, calc(100vw - 32px));
+  height: min(680px, calc(100dvh - 32px));
+  max-height: min(780px, calc(100dvh - 32px));
+  padding: 0;
+  overflow: hidden;
+  color: #f9f1e3;
+  background: #15191f;
+  border: 1px solid #a77b42;
+  border-radius: 22px;
+  box-shadow: 0 25px 80px #000c, inset 0 1px #ffdfab1a;
+}
+.settings-dialog::backdrop { background: #08090cc7; backdrop-filter: blur(4px); }
+.settings-shell { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.settings-header { display: flex; align-items: center; justify-content: space-between; padding: 22px 26px 16px; }
+.settings-header h2 { margin: 3px 0 0; font: 600 1.65rem/1.1 Georgia, serif; }
+.settings-eyebrow { margin: 0; color: #d2a86b; letter-spacing: .12em; font-size: .65rem; font-weight: 700; }
+.settings-close { width: 38px; height: 38px; padding: 0; border-radius: 50%; }
+.settings-tabs { display: flex; gap: 5px; padding: 0 22px; border-bottom: 1px solid #9c835b40; }
+.settings-tabs button { padding: 12px 15px; color: #c7c4bf; background: transparent; border: 0; border-radius: 8px 8px 0 0; border-bottom: 2px solid transparent; }
+.settings-tabs button.selected { color: #ffda99; border-bottom-color: #e2ae5c; background: #d39d3d13; }
+.settings-content { flex: 1; min-height: 0; overflow-y: auto; padding: 20px 26px 26px; }
+.settings-content [hidden] { display: none !important; }
+.options-section-heading { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 16px; }
+.options-section-heading h3 { margin: 0; font-size: 1rem; }
+.options-section-heading p { margin: 4px 0 0; color: #c4beb3; font-size: .82rem; }
+.board-view-choice, .settings-fields label { display: grid; gap: 6px; color: #e7d9c3; font-size: .8rem; font-weight: 600; }
+.board-view-choice select { min-width: 130px; }
+.board-options-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.board-option { position: relative; display: grid; align-content: start; gap: 8px; min-width: 0; padding: 7px 7px 10px; border: 1px solid #78634578; border-radius: 12px; background: #202329; cursor: pointer; text-align: center; font-size: .76rem; }
+.board-option img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; }
+.board-option input { position: absolute; inline-size: 1px; block-size: 1px; opacity: 0; }
+.board-option:has(input:checked) { border-color: #ffcf77; box-shadow: inset 0 0 0 1px #ffcf77; background: #403021; }
+.board-option:has(input:focus-visible) { outline: 2px solid #ffd27b; outline-offset: 2px; }
+.board-option:hover { background: #33291e; }
+.settings-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.settings-fields select { width: 100%; }
+.settings-game-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.settings-game-actions button:first-child { border-color: #bb8b48; color: #ffe3a9; }
+.settings-transfer { margin-top: 24px; padding-top: 16px; border-top: 1px solid #9c835b40; }
+.settings-transfer summary { color: #ecd5ad; font-weight: 600; }
+.settings-transfer .control-row { justify-content: flex-start; }
+.history-navigation { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; background: #101318; border: 1px solid #88705245; border-radius: 12px; }
+.history-navigation span { min-width: 75px; text-align: center; color: #e8d5b7; font-size: .85rem; }
+.history-navigation button { padding: 7px; }
+.move-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 7px; margin-top: 14px; }
+.move-list button { justify-content: flex-start; padding: 8px; }
+.move-list button span { color: #bfb6aa; font-size: .8rem; }
+@media (max-width: 540px) {
+  .settings-dialog { width: calc(100vw - 20px); height: min(680px, calc(100dvh - 20px)); max-height: calc(100dvh - 20px); }
+  .settings-header { padding: 16px 16px 12px; }
+  .settings-tabs { padding-inline: 10px; }
+  .settings-tabs button { flex: 1; padding-inline: 6px; }
+  .settings-content { padding: 16px; }
+  .board-options-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+  .settings-fields { grid-template-columns: 1fr; }
+}

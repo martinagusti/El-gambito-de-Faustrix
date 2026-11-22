@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.env
+public/engine/
+test-results/
+.npm-cache/
+playwright-report/
+
+# Secretos y archivos generados localmente
+.env.*
+!.env.example
+*.log
+.piece-transfer/
+/Academia-de-Ajedrez.zip
+/golden-library-chess-pieces.zip
+/board-review.png
+/board-mobile-review.png
+/piece-atlas.png
+/tablero-*.png

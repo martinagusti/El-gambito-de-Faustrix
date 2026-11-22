@@ -1,0 +1,10 @@
+.analysis-line-list { display: grid; gap: 8px; }
+.analysis-line { padding: 10px; border: 1px solid #b0a18c38; border-radius: 12px; background: #151b21; }
+.analysis-line.recommended { border-color: #d9a85a; background: linear-gradient(135deg, #30261c, #171b20); }
+.analysis-recommendation { display: block; margin-bottom: 5px; color: #ffd78b; font-weight: 700; }
+.analysis-line-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.analysis-line-heading span { color: #f9d389; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.analysis-line p, .analysis-note { margin: .25rem 0 .5rem; font-size: .83rem; }
+.analysis-line-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.analysis-line-actions button { font-size: .77rem; padding: .4rem .55rem; }
+.learning-profile { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-bottom: .75rem; font-size: .85rem; }
