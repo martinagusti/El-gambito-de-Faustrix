@@ -90,3 +90,20 @@ El indicador muestra una estimación del gasto de las consultas realizadas desde
 Los datos locales se guardan en `data/magic.sqlite`, excluidos de Git y del paquete de código. No recoge el uso anterior a su activación, el de otras aplicaciones ni otros servicios de Azure. **No es una factura ni una garantía del importe facturado**: comprueba el consumo en Azure y revisa región, modalidad y tarifas. El cálculo predeterminado no incluye impuestos. Elimina o perder esta base de datos reinicia el contador local; consérvala entre reinicios y despliegues.
 
 En `.env` puedes configurar `MAGIC_MONTHLY_LIMIT_EUR`, `MAGIC_INPUT_USD_PER_MILLION`, `MAGIC_CACHED_INPUT_USD_PER_MILLION`, `MAGIC_OUTPUT_USD_PER_MILLION`, `MAGIC_USD_PER_EUR`, `MAGIC_COST_MULTIPLIER`, `MAGIC_TIMEZONE` y `MAGIC_DB_PATH`. Los valores de ejemplo son orientativos para GPT-5 mini Global Standard; el nombre del despliegue no garantiza que coincida con el modelo, modalidad o precio real. El contador utiliza SQLite incorporado a Node y necesita una versión de Node con `node:sqlite` disponible (Node 22.13 o superior).
+
+
+## Academia
+
+En **Lecciones y prácticas** hay una primera colección local: ataque doble, clavada, coronación, aperturas italiana y española y defensas siciliana y francesa. Cada tema incluye una guía y una práctica con pistas; el avance y los errores para repasar se guardan por navegador. La partida abierta se conserva. Las líneas de apertura cubren únicamente las jugadas preparadas; una alternativa fuera de ellas no se considera necesariamente mala. Se puede consultar al mentor sobre la posición visible mediante una pregunta explícita que consume presupuesto; el resto funciona sin IA. Los tres tomos de Grau se guardan localmente en `referencias-locales/grau`, excluidos de Git y de la aplicación distribuida.
+
+El recorrido de la academia está organizado por capítulos numerados, con acceso libre a cada tema. Las guías y ejercicios son contenido propio; los libros locales no se envían automáticamente al asistente. «Continuar aprendiendo» recomienda la siguiente actividad pendiente, no restaura una jugada intermedia.
+
+En cada guía, al llegar al final puedes abrir la práctica en el mismo tablero. Las lecciones de coronación, ataque doble y clavada incluyen dos posiciones; al terminar se puede pasar directamente a la siguiente lección del recorrido. Las aperturas practican por ahora una sola línea preparada.
+
+La academia incluye además mate de última fila, ataque a la descubierta, peón pasado, columna semiabierta y puesto avanzado. El filtro ofrece niveles inicial, intermedio y avanzado. El mapa de contenido, sus fuentes y las siguientes etapas están en `docs/plan-academia-grau.md`.
+
+La biblioteca de aperturas y defensas contiene doce familias: italiana, española, escocesa, gambito de dama, Londres, inglesa, siciliana, francesa, Caro-Kann, escandinava, eslava e india de rey. Cada ficha enseña una línea introductoria para el color indicado; todavía no cubre todas las variantes de cada familia.
+
+La pestaña **Biblioteca** incluye guías de lectura para todos los temas actuales, con textos propios y ejemplos navegables en el tablero. Desde ella puedes ir a la lección o a la práctica; en pantallas pequeñas se alterna entre lectura y tablero. No reproduce ni convierte íntegramente los PDF de referencia.
+
+La academia organiza su navegación en **Aprender**, **Practicar** y **Biblioteca**. Los capítulos se pueden plegar; cada sesión muestra sus etapas, pistas y un resumen honesto de los ejercicios resueltos sin ayuda. La clavada incluye una tercera posición diagonal. El progreso anterior sigue utilizándose.

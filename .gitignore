@@ -20,3 +20,6 @@ playwright-report/
 
 # Datos locales de consumo
 /data/
+
+# Libros locales de referencia, no se distribuyen con la aplicación
+/referencias-locales/

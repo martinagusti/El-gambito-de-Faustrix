@@ -277,7 +277,7 @@ export function App() {
     {confirmation && <ConfirmDialog title={confirmation.title} description={confirmation.description} confirmLabel={confirmation.confirmLabel} onConfirm={confirmReset} onCancel={() => setConfirmation(null)} />}
     {resultDialog && <GameResultDialog result={resultDialog} onClose={() => setResultDialog(null)}
       onRestart={() => reset({ mode: state.mode, color: state.color, difficulty: state.difficulty })} />}
-    {lessonsOpen && <LessonsDialog onClose={() => setLessonsOpen(false)} />}
+    {lessonsOpen && <LessonsDialog design={boardDesign} level={learningLevel} mentor={mentor} onClose={() => setLessonsOpen(false)} />}
     {options && <SettingsDialog initialTab={options} onClose={() => setOptions(null)} game={session} onReset={requestReset}
       selected={boardDesign} onChange={chooseBoard} view={boardView} onViewChange={chooseBoardView}
       soundEnabled={sound.enabled} onSoundChange={sound.setEnabled} />}

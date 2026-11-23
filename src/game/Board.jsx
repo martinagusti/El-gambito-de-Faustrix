@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Chessboard } from 'react-chessboard';
 import { theme } from '../theme.js';
@@ -8,6 +8,7 @@ import './board.css';
 const transparentSquare = { backgroundColor: 'transparent' };
 
 export function Board({ design, view, game, orientation, selected, legal = [], last, candidate, onClick, onDrop, disabled, onDismissVariation }) {
+  const boardId = useId();
   const [keyboardSquare, setKeyboardSquare] = useState(null);
   const [touchPreview, setTouchPreview] = useState(null);
   const touchStart = useRef(null);
@@ -74,7 +75,7 @@ export function Board({ design, view, game, orientation, selected, legal = [], l
     <div className="board-plinth" data-view={view} data-design={design} style={{ '--board-art': 'url(/themes/boards/' + design + '.webp)' }}>
       <div className="board-ranks" aria-hidden="true">{Array.from(orientation === 'b' ? '12345678' : '87654321', rank => <span key={rank}>{rank}</span>)}</div>
       <div className="board-surface">
-        <Chessboard id="academy-board" position={game.fen()} boardOrientation={orientation === 'b' ? 'black' : 'white'}
+        <Chessboard id={boardId} position={game.fen()} boardOrientation={orientation === 'b' ? 'black' : 'white'}
           customPieces={theme.pieces} customLightSquareStyle={transparentSquare}
           customDarkSquareStyle={transparentSquare} customSquareStyles={highlights} showBoardNotation={false}
           customArrows={candidate ? [[candidate.slice(0, 2), candidate.slice(2, 4), '#ffd470']] : []}
