@@ -137,13 +137,13 @@ it('conserva una respuesta infantil aunque contenga notación', async () => {
 });
 
 
-it('evita que una pista infantil revele una jugada concreta', async () => {
+it('acepta una pista infantil concreta con palabras sencillas', async () => {
   const answer = { verdict: 'good', explanation: '', hint: 'Mueve el peón delante del rey dos casillas.', followUpQuestion: '', verifiedLineIds: [] };
   const fetch = vi.fn(async () => Response.json({ status: 'completed', output: [{ type: 'message', content: [{ type: 'output_text', text: JSON.stringify(answer) }] }] }));
   vi.stubGlobal('fetch', fetch);
   const result = await createCoach(env)({ question: 'Dame una pista.', level: 'firstSteps' });
-  expect(fetch).toHaveBeenCalledTimes(2);
-  expect(result.hint).not.toContain('dos casillas');
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(result.hint).toContain('dos casillas');
 });
 
 
@@ -219,4 +219,23 @@ it('acumula tokens de ambas llamadas cuando se reintenta una respuesta', async (
     await createCoach(env, budget)({ question: 'Dame una pista.', level: 'firstSteps' });
     expect(budget.status()).toMatchObject({ calls: 2, inputTokens: 2000, cachedTokens: 200, outputTokens: 200, uncertainCalls: 0 });
   } finally { budget.close(); }
+});
+
+
+it('acepta una pista concreta con casilla sin reintentar', async () => {
+  const answer = { verdict: 'good', explanation: '', hint: 'Piensa en llevar el caballo a f3.', followUpQuestion: '', verifiedLineIds: [] };
+  const fetch = vi.fn(async () => Response.json({ status: 'completed', output: [{ type: 'message', content: [{ type: 'output_text', text: JSON.stringify(answer) }] }] }));
+  vi.stubGlobal('fetch', fetch);
+  const result = await createCoach(env)({ question: 'Dame una pista.', level: 'intermediate' });
+  expect(result.hint).toBe(answer.hint);
+  expect(fetch).toHaveBeenCalledTimes(1);
+});
+
+it('usa una recomendación verificada cuando no hay pista útil', async () => {
+  const answer = { verdict: 'good', explanation: '', hint: '', followUpQuestion: '', verifiedLineIds: [] };
+  const fetch = vi.fn(async () => Response.json({ status: 'completed', output: [{ type: 'message', content: [{ type: 'output_text', text: JSON.stringify(answer) }] }] }));
+  vi.stubGlobal('fetch', fetch);
+  const result = await createCoach(env)({ question: 'Dame una pista.', level: 'intermediate', analysis: { bestLines: [{ moveSan: 'Nf3' }] } });
+  expect(result.hint).toContain('Nf3');
+  expect(result.hint).not.toContain('Pista general');
 });

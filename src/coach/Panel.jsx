@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { BarChart3, Send, Sparkles } from 'lucide-react';
+import { BarChart3, Send, Sparkles, X } from 'lucide-react';
 import { AnalysisLines } from './AnalysisLines.jsx';
 import { learningProfiles } from '../../shared/learningProfiles.js';
 import { mentors } from '../../shared/mentors.js';
@@ -14,12 +14,14 @@ const mentorThinking = {
 
 const tabs = [['coach', 'Asistente', Sparkles], ['analysis', 'Análisis', BarChart3]];
 
-export function CoachPanel({ coach, tab, setTab, candidate, comparison, setComparison, legal, showLine, revision, finished, learningLevel, setLearningLevel, mentor, setMentor, automaticAnalysis, setAutomaticAnalysis }) {
+export function CoachPanel({ onClose, hidden, compactOpen, coach, tab, setTab, candidate, comparison, setComparison, legal, showLine, revision, finished, learningLevel, setLearningLevel, mentor, setMentor, automaticAnalysis, setAutomaticAnalysis }) {
   const [question, setQuestion] = useState('');
+  const [dragOffset, setDragOffset] = useState(0);
   const [showMentors, setShowMentors] = useState(false);
   const [magicStatus, setMagicStatus] = useState(null);
   const updateMagicStatus = useCallback(value => setMagicStatus(value), []);
   const scroll = useRef();
+  const dragStart = useRef(null);
   const { current, messages, phase, error, magicLimit, request, cancel } = coach;
   const analysis = current?.analysis;
 
@@ -44,7 +46,13 @@ export function CoachPanel({ coach, tab, setTab, candidate, comparison, setCompa
     setTab('coach');
     request({ question, candidate: line.moveUci, comparison: other ? other.lan : null });
   }
-  return <aside className="coach panel" aria-label="Profesor de ajedrez">
+  return <aside className={"coach panel" + (hidden ? " coach-hidden" : "") + (compactOpen ? " compact-open" : "")} aria-label="Profesor de ajedrez" style={dragOffset ? { transform: `translateY(${dragOffset}px)` } : undefined}>
+    <button className="coach-drag-handle" type="button" aria-label="Cerrar profesor" onClick={event => { if (event.detail === 0) onClose(); }}
+      onPointerDown={event => { dragStart.current = event.clientY; event.currentTarget.setPointerCapture(event.pointerId); }}
+      onPointerMove={event => { if (dragStart.current !== null) setDragOffset(Math.max(0, event.clientY - dragStart.current)); }}
+      onPointerUp={event => { if (dragStart.current !== null && (event.clientY - dragStart.current > 60 || Math.abs(event.clientY - dragStart.current) < 5)) onClose(); dragStart.current = null; setDragOffset(0); }}
+      onPointerCancel={() => { dragStart.current = null; setDragOffset(0); }}><span aria-hidden="true" /></button>
+    <button className="coach-close" onClick={onClose} aria-label="Cerrar profesor" title="Cerrar profesor"><X size={18} /></button>
     <div className="tabs" role="group" aria-label="Panel del profesor">
       {tabs.map(([key, label, Icon]) => <button key={key} className={tab === key ? 'active' : ''} aria-pressed={tab === key} onClick={() => setTab(key)}><Icon size={18} /> {label}</button>)}
     </div>

@@ -7,7 +7,6 @@ export function childAnswerIssue(answer, isHint) {
   if (!isHint) return '';
   if (technical.test(text)) return 'La respuesta usa palabras técnicas.';
   if (notation.test(text)) return 'La respuesta usa notación de ajedrez o coordenadas.';
-  if (isHint && /\b(?:un|una|dos|1|2)\s+(?:casilla|casillas|paso|pasos)\b|\bpe[oó]n\b.{0,35}\b(?:rey|dama)\b/iu.test(text)) return 'La pista revela demasiado sobre una jugada concreta.';
   return '';
 }
 
@@ -30,6 +29,5 @@ export function childFallback(isHint, data = {}) {
 export function generalAnswerIssue(answer, _level, isHint) {
   const text = isHint ? answer.hint : [answer.explanation, answer.hint].filter(Boolean).join(' ');
   if (!text?.trim()) return 'Falta una respuesta útil.';
-  if (isHint && /\b(?:[KQRBN][a-h]?[1-8]?x?[a-h][1-8]|[a-h][1-8][a-h][1-8]|[a-h][1-8]|O-O(?:-O)?)\b|\b(?:un|una|dos|1|2)\s+(?:casilla|casillas|paso|pasos)\b/iu.test(text)) return 'La pista revela una jugada concreta.';
   return '';
 }

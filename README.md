@@ -31,6 +31,12 @@ Con `npm run build` y `npm start`, Express sirve la aplicación compilada en htt
 
 ## Uso
 
+- Las pistas priorizan ideas concretas para la posición y pueden mencionar una jugada verificada si es necesario.
+
+- En tablet vertical, el profesor ocupa casi toda la pantalla y se puede cerrar desde la X o deslizando hacia abajo el tirador superior.
+
+- En escritorio puedes plegar el profesor para ampliar el área del tablero; la preferencia se guarda. En tablet, el menú y el profesor se abren cuando los necesitas, con accesos directos a Asistente y Análisis.
+
 - En **Opciones → Sonido** puedes activar o desactivar todos los efectos. Se guarda la elección en el navegador; no hay música. Los sonidos acompañan movimientos, capturas, enroques, jaques, fin de partida, botones, consultas y análisis.
 - Cuando se agota el presupuesto del mentor, puedes usar la pestaña **Análisis** para consultar las recomendaciones locales sin consumir tokens.
 - Al terminar una partida aparece el resultado tras dos segundos, con opciones para volver al tablero o comenzar otra partida. En partida contra el ordenador y dos jugadores, las flechas permiten revisar el historial; en estudio libre también puedes continuar desde una posición anterior, sustituyendo las jugadas posteriores.

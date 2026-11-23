@@ -117,3 +117,7 @@
   .board-plinth[data-view="perspective"] { --board-tilt: 6deg; }
   .board-ranks, .board-files { font-size: .76rem; }
 }
+
+/* La vista previa táctil se muestra en el viewport para seguir el dedo. */
+.touch-drag-active .board-surface div[style*="position: fixed"] { visibility: hidden; }
+.touch-piece-preview { position: fixed; z-index: 1000; pointer-events: none; transform: translate(-50%, -50%); }

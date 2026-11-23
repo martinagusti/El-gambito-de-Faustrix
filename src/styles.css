@@ -212,3 +212,60 @@ textarea { display: block; width: 100%; margin: .65rem 0; min-height: 70px; bord
 .board-actions .new-game-button { border-color: #a87e47; color: #ffe2ad; }
 
 .quick-help-note { color: #c8bdab; font-size: .72rem; line-height: 1.4; margin: .4rem .1rem 0; }
+
+/* El tablero gana espacio al plegar el profesor; el panel permanece montado. */
+.coach { position: relative; }
+.coach-close { position: absolute; z-index: 2; right: 6px; top: 6px; width: 30px; height: 30px; padding: 0; border-radius: 50%; }
+.tabs { padding-right: 38px; }
+.coach-launchers, .compact-menu-button, .compact-coach-backdrop, .coach-drag-handle { display: none; }
+@media (min-width: 1121px) {
+  .layout.coach-collapsed { grid-template-columns: minmax(148px, .44fr) minmax(0, 1fr) auto; }
+  .coach-hidden { display: none; }
+  .coach-collapsed .coach-launchers { display: block; align-self: start; }
+  .coach-launchers button { min-height: 44px; }
+}
+@media (min-width: 1450px) {
+  .layout.coach-collapsed { grid-template-columns: 238px minmax(0, 1fr) auto; }
+}
+@media (max-width: 1120px), (max-width: 1366px) and (pointer: coarse) {
+  .compact-menu-button { display: inline-flex; }
+  .layout, .layout.coach-collapsed { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+  .sidebar { display: none; position: fixed; z-index: 20; top: 68px; right: 12px; width: min(300px, calc(100vw - 24px)); flex-direction: column; }
+  .menu-open .sidebar { display: flex; }
+  .coach-launchers { display: flex; gap: 8px; justify-content: center; }
+  .coach-launchers button { min-height: 44px; }
+  .coach { display: none; position: fixed; z-index: 31; top: 12px; right: 12px; bottom: 12px; width: min(420px, 85vw); min-height: 0; max-height: none; margin: 0; }
+  .coach.compact-open { display: flex; }
+  .compact-coach-open .compact-coach-backdrop { display: block; position: fixed; inset: 0; z-index: 30; border: 0; border-radius: 0; background: #0008; }
+  .board-surface { touch-action: none; }
+  .board-actions button { min-height: 40px; }
+}
+@media (max-width: 1120px) and (min-width: 900px) and (min-height: 540px), (max-width: 1366px) and (min-width: 900px) and (min-height: 540px) and (pointer: coarse) {
+  .layout, .layout.coach-collapsed { grid-template-rows: minmax(0, 1fr) auto; }
+  .board-area { min-height: 0; }
+}
+@media (max-width: 690px), (max-width: 1120px) and (orientation: portrait), (max-width: 1366px) and (pointer: coarse) and (orientation: portrait) {
+  .coach { top: auto; right: 0; bottom: 0; width: 100%; height: 94dvh; border-radius: 22px 22px 0 0; }
+  .app { padding-bottom: 72px; }
+  .coach-launchers { position: fixed; z-index: 10; bottom: 0; left: 0; right: 0; padding: 8px; background: #15171df2; border-top: 1px solid var(--border); }
+  .coach-launchers button { flex: 1; max-width: 260px; }
+}
+
+@media (max-width: 1120px), (max-width: 1366px) and (pointer: coarse) {
+  .board-area, .board-frame, .board-plinth { min-width: 0; }
+  .board-plinth { width: 100%; }
+  .header { gap: 8px; }
+  .mode-pill { display: none; }
+}
+
+@media (max-width: 1120px), (max-width: 1366px) and (pointer: coarse) {
+  .coach-close { width: 44px; height: 44px; }
+  .tabs { padding-right: 54px; }
+  .sidebar button, .board-actions button { min-height: 44px; }
+}
+
+@media (max-width: 690px), (max-width: 1120px) and (orientation: portrait), (max-width: 1366px) and (pointer: coarse) and (orientation: portrait) {
+  .coach-drag-handle { display: flex; flex: none; align-items: center; justify-content: center; width: 100%; height: 28px; padding: 0; border: 0; border-radius: 22px 22px 0 0; background: transparent; touch-action: none; }
+  .coach-drag-handle span { width: 46px; height: 5px; border-radius: 99px; background: #f7eee0; }
+  .coach-close { top: 30px; }
+}

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { BookOpen, BookOpenCheck, ChevronLeft, ChevronRight, Crown, GraduationCap, Maximize, RotateCcw, Settings, Swords, Users } from 'lucide-react';
+import { BookOpen, BookOpenCheck, ChevronLeft, ChevronRight, Crown, GraduationCap, Maximize, Menu, RotateCcw, Settings, Sparkles, BarChart3, Swords, Users } from 'lucide-react';
 import { replay, toUci } from '../shared/chess.js';
 import { useGame } from './game/useGame.js';
 import { useSound } from './game/useSound.js';
@@ -70,6 +70,31 @@ export function App() {
   }, [state.id, state.moves, state.mode, state.color, session.fullGame, sound.play]);
   const [selection, setSelection] = useState({});
   const [tab, setTab] = useState('coach');
+  const [coachOpen, setCoachOpen] = useState(() => {
+    try { return localStorage.getItem('fausto.coach-open') !== 'false'; } catch { return true; }
+  });
+  const [compactCoachOpen, setCompactCoachOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    if (!menuOpen) return;
+    function closeOutside(event) {
+      if (event.target instanceof Element && !event.target.closest('.sidebar, .compact-menu-button')) setMenuOpen(false);
+    }
+    function closeOnEscape(event) { if (event.key === 'Escape') setMenuOpen(false); }
+    document.addEventListener('pointerdown', closeOutside);
+    document.addEventListener('keydown', closeOnEscape);
+    return () => { document.removeEventListener('pointerdown', closeOutside); document.removeEventListener('keydown', closeOnEscape); };
+  }, [menuOpen]);
+  const compact = () => window.matchMedia('(max-width: 1120px), (max-width: 1366px) and (pointer: coarse)').matches;
+  function openCoach(nextTab) {
+    if (nextTab) setTab(nextTab);
+    if (compact()) setCompactCoachOpen(true);
+    else { setCoachOpen(true); try { localStorage.setItem('fausto.coach-open', 'true'); } catch { /* Optional preference. */ } }
+  }
+  function closeCoach() {
+    if (compact()) setCompactCoachOpen(false);
+    else { setCoachOpen(false); try { localStorage.setItem('fausto.coach-open', 'false'); } catch { /* Optional preference. */ } }
+  }
   const [options, setOptions] = useState(null);
   const [lessonsOpen, setLessonsOpen] = useState(false);
   const [confirmation, setConfirmation] = useState(null);
@@ -163,7 +188,7 @@ export function App() {
       else await document.documentElement.requestFullscreen();
     } catch { setDisplayError('La pantalla completa no está disponible en este dispositivo.'); }
   }
-  function showLine(line) { patch({ variation: line, step: 0 }); }
+  function showLine(line) { patch({ variation: line, step: 0 }); if (compact()) setCompactCoachOpen(false); }
   function chooseBoard(id) {
     setBoardDesign(id);
     try { localStorage.setItem(boardPreference, id); } catch { /* Selection still applies. */ }
@@ -181,7 +206,7 @@ export function App() {
     try { localStorage.setItem('fausto.learning-level', level); } catch { /* Selection still applies. */ }
   }
   const askCandidate = () => {
-    setTab('coach');
+    openCoach('coach');
     coach.request({ question: comparison ? 'Compara estas dos jugadas.' : '¿Es buena idea jugar esta candidata?', candidate, comparison });
   };
 
@@ -191,13 +216,13 @@ export function App() {
   }}>
     <header className="header">
       <div className="brand"><Crown size={40} /><div>El Gambito<span>de Fausto</span></div></div>
-      <div className="header-tools"><span className="mode-pill"><GraduationCap size={19} /> {state.mode === 'play' ? 'Partida contra el ordenador' : state.mode === 'local' ? 'Partida de dos jugadores' : 'Estudio libre'}</span>
+      <div className="header-tools"><button className="compact-menu-button" aria-label="Menú de juego" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><Menu size={20} /></button><span className="mode-pill"><GraduationCap size={19} /> {state.mode === 'play' ? 'Partida contra el ordenador' : state.mode === 'local' ? 'Partida de dos jugadores' : 'Estudio libre'}</span>
         <button aria-label="Opciones" aria-haspopup="dialog" aria-expanded={Boolean(options)} onClick={() => setOptions('design')}><Settings size={20} /></button>
         <button aria-label="Pantalla completa" onClick={fullscreen}><Maximize size={20} /></button></div>
     </header>
     {displayError && <p className="error">{displayError}</p>}
-    <main className="layout">
-      <nav className="sidebar panel" aria-label="Modos de juego">
+    <main className={"layout" + (!coachOpen ? " coach-collapsed" : "") + (compactCoachOpen ? " compact-coach-open" : "") + (menuOpen ? " menu-open" : "")}>
+      <nav className="sidebar panel" aria-label="Modos de juego" onClick={() => setMenuOpen(false)}>
         <button className={state.mode === 'play' ? 'active' : ''} onClick={() => mode('play')}><Swords /> Contra el ordenador</button>
         <button className={state.mode === 'local' ? 'active' : ''} onClick={() => mode('local')}><Users /> Dos jugadores</button>
         <button className={state.mode === 'study' ? 'active' : ''} onClick={() => mode('study')}><BookOpen /> Estudio libre</button>
@@ -239,7 +264,12 @@ export function App() {
           <button onClick={() => patch({ promotions: null })}>Cancelar</button>
         </div>}
       </section>
-      <CoachPanel coach={coach} tab={tab} setTab={setTab} candidate={candidate} comparison={comparison}
+      <div className="coach-launchers" aria-label="Abrir asistente">
+        <button onClick={() => openCoach('coach')}><Sparkles size={18} /> Asistente</button>
+        <button className="compact-analysis-button" onClick={() => openCoach('analysis')}><BarChart3 size={18} /> Análisis</button>
+      </div>
+      <button className="compact-coach-backdrop" aria-label="Cerrar profesor" onClick={closeCoach} tabIndex={compactCoachOpen ? 0 : -1} />
+      <CoachPanel onClose={closeCoach} hidden={!coachOpen} compactOpen={compactCoachOpen} coach={coach} tab={tab} setTab={setTab} candidate={candidate} comparison={comparison}
         learningLevel={learningLevel} setLearningLevel={chooseLearningLevel} mentor={mentor} setMentor={chooseMentor}
         automaticAnalysis={automaticAnalysis} setAutomaticAnalysis={chooseAutomaticAnalysis}
         setComparison={value => patch({ comparison: value })} legal={legal} showLine={showLine} revision={revision} finished={game.isGameOver()} />
