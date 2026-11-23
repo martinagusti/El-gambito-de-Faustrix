@@ -5,9 +5,9 @@ import { learningProfiles } from '../../shared/learningProfiles.js';
 import './mentor-dialog.css';
 
 const levelDescriptions = {
-  firstSteps: 'Una idea cada vez, con palabras sencillas y sin puntuaciones.',
-  beginner: 'Explicaciones sencillas y hasta dos variantes principales.',
-  intermediate: 'Compara hasta tres variantes, sus ideas y sus riesgos.',
+  firstSteps: 'Explicaciones breves, con palabras sencillas para quienes empiezan.',
+  beginner: 'Explicaciones sencillas para entender las ideas principales.',
+  intermediate: 'Compara jugadas, sus ideas y sus riesgos.',
   advanced: 'Explicaciones más detalladas con notación, evaluaciones y planes.',
 };
 

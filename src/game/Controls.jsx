@@ -9,12 +9,10 @@ export function Controls({ game, onReset, activeTab }) {
   const { state, fullGame, cursor, navigate } = game;
   const index = cursor ?? state.moves.length;
   const history = fullGame.history({ verbose: true });
-  const reset = options => {
-    if (!state.moves.length || window.confirm('¿Reemplazar la partida actual? Puedes exportarla antes.')) onReset(options);
-  };
+  const reset = (options, kind = 'settings') => onReset(options, kind);
   function load() {
     try {
-      reset({ ...state, ...importPosition(transfer), mode: 'study' });
+      reset({ ...state, ...importPosition(transfer), mode: 'study' }, 'import');
       setNotice('');
     } catch { setNotice('El texto no es un FEN o PGN válido.'); }
   }
@@ -34,7 +32,7 @@ export function Controls({ game, onReset, activeTab }) {
         {Object.entries(rivals).map(([key, { label }]) => <option value={key} key={key}>{label}</option>)}</select></label>}
       </div>
       <div className="settings-game-actions">
-      <button onClick={() => reset({ mode: state.mode, color: state.color, difficulty: state.difficulty })}><RotateCcw size={16} /> Nueva</button>
+      <button onClick={() => reset({ mode: state.mode, color: state.color, difficulty: state.difficulty }, 'new')}><RotateCcw size={16} /> Nueva</button>
       </div>
       <details className="settings-transfer"><summary>Importar o exportar posición</summary>
       <textarea aria-label="FEN o PGN" value={transfer} onChange={event => setTransfer(event.target.value)} placeholder="Pega un FEN o PGN" />

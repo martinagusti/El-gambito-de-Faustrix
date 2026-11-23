@@ -1,5 +1,4 @@
 import { Eye, Sparkles } from 'lucide-react';
-import { learningProfiles } from '../../shared/learningProfiles.js';
 import './analysis-lines.css';
 
 const pieceNames = { N: 'Caballo', B: 'Alfil', R: 'Torre', Q: 'Dama', K: 'Rey' };
@@ -30,13 +29,11 @@ function describeScore(score) {
 }
 
 export function AnalysisLines({ analysis, showLine, explain, busy, level }) {
-  const firstSteps = level === 'firstSteps';
   const recommended = analysis?.bestLines.find(line => line.id === 'pv1');
   const lines = [...new Map([...(analysis?.bestLines ?? []), analysis?.candidateLine, analysis?.comparisonLine]
     .filter(Boolean).map(line => [line.moveUci, line])).values()];
   if (!lines.length) return null;
-  const shown = firstSteps ? [recommended ?? lines[0]] :
-    lines.filter((line, index) => index < learningProfiles[level].lines || [analysis.candidateLine?.moveUci, analysis.comparisonLine?.moveUci].includes(line.moveUci));
+  const shown = lines;
   const close = recommended && analysis.bestLines.some(line => (
     line !== recommended && line.score.type === 'cp' && recommended.score.type === 'cp'
     && !line.score.bound && !recommended.score.bound
@@ -44,23 +41,23 @@ export function AnalysisLines({ analysis, showLine, explain, busy, level }) {
   ));
 
   return <section className="alternatives">
-    <h3><Sparkles size={17} /> {firstSteps ? 'Una idea para probar' : 'Jugadas recomendadas'}</h3>
-    {!firstSteps && close && <p className="analysis-note muted">Hay alternativas con una evaluación muy parecida.</p>}
+    <h3><Sparkles size={17} /> Jugadas recomendadas</h3>
+    {close && <p className="analysis-note muted">Hay alternativas con una evaluación muy parecida.</p>}
     <div className="analysis-line-list">
       {shown.map(line => {
         const preferred = recommended?.moveUci === line.moveUci;
         return <article className={preferred ? 'analysis-line recommended' : 'analysis-line'} key={line.moveUci}>
-          {preferred && !firstSteps && <small className="analysis-recommendation">Mejor valorada</small>}
+          {preferred && <small className="analysis-recommendation">Mejor valorada</small>}
           <div className="analysis-line-heading">
-            <strong>{!firstSteps && line.moveSan + ' · '}{describeMove(line.moveSan, line.moveUci)}</strong>
-            {!firstSteps && <span>{evaluation(line.score)}</span>}
+            <strong>{line.moveSan + ' · '}{describeMove(line.moveSan, line.moveUci)}</strong>
+            {<span>{evaluation(line.score)}</span>}
           </div>
-          {!firstSteps && <p className="muted">{describeScore(line.score)}</p>}
-          {!firstSteps && line.pvSan[1] && line.pvUci[1] && <p>Respuesta prevista: {line.pvSan[1]} · {describeMove(line.pvSan[1], line.pvUci[1])}</p>}
+          {<p className="muted">{describeScore(line.score)}</p>}
+          {line.pvSan[1] && line.pvUci[1] && <p>Respuesta prevista: {line.pvSan[1]} · {describeMove(line.pvSan[1], line.pvUci[1])}</p>}
           {level === 'advanced' && line.pvSan.length > 2 && <p>Continuación: {line.pvSan.slice(2, 10).join(' · ')}</p>}
           <div className="analysis-line-actions">
-            <button onClick={() => showLine(firstSteps ? { ...line, pvUci: line.pvUci.slice(0, 1) } : line)}
-              aria-label={firstSteps ? 'Mostrar flecha' : 'Ver en el tablero: ' + line.moveSan}><Eye size={16} /> {firstSteps ? 'Mostrar flecha' : 'Ver en el tablero'}</button>
+            <button onClick={() => showLine(line)}
+              aria-label={'Ver en el tablero: ' + line.moveSan}><Eye size={16} /> Ver en el tablero</button>
             <button disabled={busy} onClick={() => explain(line, recommended)} aria-label={'¿Por qué esta jugada? ' + line.moveSan}>¿Por qué esta jugada?</button>
           </div>
         </article>;

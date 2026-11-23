@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { BookOpen, Palette, Settings2, X } from 'lucide-react';
+import { BookOpen, Palette, Settings2, Volume2, X } from 'lucide-react';
 import { BoardOptions } from './BoardOptions.jsx';
 import { Controls } from './Controls.jsx';
 import './board-options.css';
@@ -8,9 +8,10 @@ const tabs = [
   { id: 'design', label: 'Diseño', icon: Palette },
   { id: 'game', label: 'Partida', icon: Settings2 },
   { id: 'history', label: 'Jugadas', icon: BookOpen },
+  { id: 'sound', label: 'Sonido', icon: Volume2 },
 ];
 
-export function SettingsDialog({ initialTab, onClose, game, onReset, selected, onChange, view, onViewChange }) {
+export function SettingsDialog({ initialTab, onClose, game, onReset, selected, onChange, view, onViewChange, soundEnabled, onSoundChange }) {
   const dialog = useRef(null);
   const [tab, setTab] = useState(initialTab);
   useEffect(() => {
@@ -45,6 +46,12 @@ export function SettingsDialog({ initialTab, onClose, game, onReset, selected, o
           <BoardOptions selected={selected} onChange={onChange} view={view} onViewChange={onViewChange} />
         </div>
         <Controls game={game} onReset={onReset} activeTab={tab} />
+        <div role="tabpanel" id="settings-panel-sound" aria-labelledby="settings-tab-sound" hidden={tab !== 'sound'}>
+          <div className="options-section-heading"><div><h3>Sonidos del juego</h3><p>Escucha los movimientos, el mentor y las acciones de la partida.</p></div></div>
+          <label className="sound-setting"><span><strong>Efectos de sonido</strong><small>Incluye tablero, botones, análisis y mentor. Sin música.</small></span>
+            <input type="checkbox" role="switch" checked={soundEnabled} onChange={event => onSoundChange(event.target.checked)} aria-label="Efectos de sonido" />
+          </label>
+        </div>
       </div>
     </div>
   </dialog>;

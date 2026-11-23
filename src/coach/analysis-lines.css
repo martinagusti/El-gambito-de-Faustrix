@@ -8,3 +8,7 @@
 .analysis-line-actions { display: flex; flex-wrap: wrap; gap: 6px; }
 .analysis-line-actions button { font-size: .77rem; padding: .4rem .55rem; }
 .learning-profile { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-bottom: .75rem; font-size: .85rem; }
+.analysis-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.analysis-header h2 { margin: 0; }
+.analysis-auto-setting { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; padding: 5px 8px; border: 1px solid #80683e78; border-radius: 8px; background: #202329; color: #e9ddc8; font-size: .76rem; cursor: pointer; }
+.analysis-auto-setting input { width: 16px; height: 16px; margin: 0; accent-color: #dca950; cursor: pointer; }

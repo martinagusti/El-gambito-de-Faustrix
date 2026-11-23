@@ -208,3 +208,7 @@ textarea { display: block; width: 100%; margin: .65rem 0; min-height: 70px; bord
 .lessons-coming-soon h3 { display: block; margin: 12px 0 4px; font: 600 1.5rem Georgia, serif; color: #fff0d3; }
 .lessons-coming-soon > p:not(.settings-eyebrow) { max-width: 390px; color: #d3c6b5; margin-bottom: 22px; }
 .sidebar button { white-space: normal; text-align: left; }
+
+.board-actions .new-game-button { border-color: #a87e47; color: #ffe2ad; }
+
+.quick-help-note { color: #c8bdab; font-size: .72rem; line-height: 1.4; margin: .4rem .1rem 0; }

@@ -17,3 +17,6 @@ playwright-report/
 /board-mobile-review.png
 /piece-atlas.png
 /tablero-*.png
+
+# Datos locales de consumo
+/data/

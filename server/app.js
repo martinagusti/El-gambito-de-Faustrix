@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { answerSchema, validateRequest } from './contract.js';
 
-export function createApp({ coach = null, env = process.env } = {}) {
+export function createApp({ coach = null, budget = null, env = process.env } = {}) {
   const app = express();
   app.disable('x-powered-by');
   const origins = new Set((env.ALLOWED_ORIGINS || 'http://localhost:5173,http://127.0.0.1:5173').split(',').map(item => item.trim()));
@@ -17,6 +17,10 @@ export function createApp({ coach = null, env = process.env } = {}) {
     next();
   });
   app.use('/api', express.json({ limit: '32kb' }));
+  app.get('/api/magic', (_req, res) => {
+    if (!budget) return res.status(503).json({ error: 'El contador de magia no está disponible.' });
+    try { res.set('Cache-Control', 'no-store'); return res.json(budget.status()); } catch { return res.status(503).json({ error: 'No se pudo consultar el contador de magia.' }); }
+  });
   app.get('/api/health', (_req, res) => res.json({ status: 'ok', coachConfigured: Boolean(coach) }));
   let active = 0;
   let used = 0;
@@ -42,6 +46,7 @@ export function createApp({ coach = null, env = process.env } = {}) {
         verifiedLineIds: [...new Set(answer.verifiedLineIds.filter(id => input.lineIds.includes(id)))] });
     } catch (error) {
       if (res.destroyed) return;
+      if (error.code === 'MAGIC_LIMIT') return res.status(429).json({ error: error.message, code: error.code, period: error.period });
       if (error.status === 429) return res.status(429).json({ error: 'Azure OpenAI alcanzó la cuota del despliegue. Inténtalo en un momento.' });
       if (abort.signal.aborted) return res.status(504).json({ error: 'El profesor tardó demasiado.' });
       res.status(502).json({ error: 'El profesor no pudo responder. Puedes seguir usando el análisis local.' });

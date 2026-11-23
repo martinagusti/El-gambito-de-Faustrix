@@ -1,0 +1,30 @@
+import { expect, test } from '@playwright/test';
+
+test('análisis manual por defecto y automático persistente tras mover y revisar', async ({ page }) => {
+  let requests = 0;
+  await page.route('**/api/coach/ask', route => { requests += 1; return route.abort(); });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Dos jugadores' }).click();
+  await page.getByRole('button', { name: 'Análisis', exact: true }).click();
+  const toggle = page.getByRole('switch', { name: 'Actualizar análisis automáticamente' });
+  await expect(toggle).not.toBeChecked();
+  await expect(page.getByRole('button', { name: 'Analizar posición' })).toBeVisible();
+  await expect(page.locator('.analysis-line')).toHaveCount(0);
+  await toggle.check();
+  await expect(page.locator('.analysis-line').first()).toBeVisible({ timeout: 30000 });
+  await expect(page.getByText(/Perspectiva: blancas/)).toBeVisible();
+  await page.locator('[data-square="e2"]').first().click();
+  await page.locator('[data-square="e4"]').first().click();
+  await expect(page.getByText(/Perspectiva: negras/)).toBeVisible({ timeout: 30000 });
+  await page.getByRole('button', { name: 'Jugada anterior' }).click();
+  await expect(page.getByText(/Perspectiva: blancas/)).toBeVisible({ timeout: 30000 });
+  expect(requests).toBe(0);
+  await page.reload();
+  await page.getByRole('button', { name: 'Análisis', exact: true }).click();
+  await expect(toggle).toBeChecked();
+  await toggle.uncheck();
+  await page.reload();
+  await page.getByRole('button', { name: 'Análisis', exact: true }).click();
+  await expect(toggle).not.toBeChecked();
+  await expect(page.getByRole('button', { name: 'Analizar posición' })).toBeVisible();
+});

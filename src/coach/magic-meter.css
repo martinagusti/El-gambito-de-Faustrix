@@ -1,0 +1,19 @@
+.magic-meter { width: calc(100% - 24px); margin: 9px 12px 0; padding: 8px 10px; border-color: #87643c; background: linear-gradient(110deg, #332719, #1a1d23); text-align: left; flex-shrink: 0; }
+.magic-icon { color: #ffcc76; filter: drop-shadow(0 0 5px #e7a231); }
+.magic-meter-body { display: grid; flex: 1; gap: 5px; min-width: 0; }
+.magic-meter-label { display: flex; justify-content: space-between; gap: 8px; color: #e9d9bd; font-size: .73rem; }
+.magic-meter-label span { color: #f7ce87; }
+.magic-track { display: block; height: 7px; overflow: hidden; border: 1px solid #9a784b; border-radius: 8px; background: #14171a; }
+.magic-track > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #c47c25, #ffe09a); transition: width .25s ease; }
+.settings-dialog.magic-dialog { width: min(510px, calc(100vw - 28px)); height: fit-content; max-height: calc(100dvh - 28px); overflow-y: auto; }
+.magic-detail-content { padding: 0 26px 24px; color: #d9cdbd; }
+.magic-detail-content h3 { color: #ffddaa; margin-top: 1.2rem; }
+.magic-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+.magic-stat-grid > div { display: grid; gap: 4px; padding: 12px; border: 1px solid #9d7748; border-radius: 12px; background: #261f1b; }
+.magic-stat-grid strong { font-size: 1.2rem; color: #ffe1a8; } .magic-stat-grid span { font-size: .75rem; color: #c2b6a7; }
+.magic-tokens { margin: 0; } .magic-tokens div { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid #ffffff15; font-size: .84rem; }
+.magic-tokens dd { margin: 0; color: #f7e9d5; font-variant-numeric: tabular-nums; }
+.magic-footnote { color: #beb6ab; font-size: .73rem; line-height: 1.45; margin-top: 13px; }
+@media (max-width: 360px) { .magic-stat-grid { grid-template-columns: 1fr; } .magic-detail-content { padding-inline: 16px; } }
+.magic-alternative { display: grid; gap: 8px; margin: 0 14px 10px; padding: 12px; border: 1px solid #9b7843; border-radius: 12px; background: #292315; color: #f1dfbd; font-size: .82rem; line-height: 1.4; }
+.magic-alternative button { justify-self: start; padding: 6px 10px; color: #ffe1a0; border-color: #b28a4c; }

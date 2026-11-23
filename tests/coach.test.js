@@ -36,3 +36,26 @@ it('acepta mentores conocidos, usa Fáustrix por defecto y rechaza personajes aj
   expect(coach.mock.calls[1][0].mentor).toBe('selene');
   await request(app).post('/api/coach/ask').send({ ...input, mentor: 'desconocido' }).expect(400);
 });
+
+
+it('calcula hechos verificables de cada recomendación desde el tablero', async () => {
+  const coach = vi.fn(async () => answer);
+  await request(createApp({ coach })).post('/api/coach/ask').send(input).expect(200);
+  const fact = coach.mock.calls[0][0].analysis.bestLines[0].facts;
+  expect(fact).toMatchObject({ piece: 'p', from: 'e2', to: 'e4', captured: null, givesCheck: false, verifiedNextMove: 'e5' });
+  expect(fact.pieceAttacks).toEqual(expect.arrayContaining(['d5', 'f5']));
+  expect(fact.pieceAttacks).not.toContain('d4');
+  expect(fact.attacksCentralSquares).toContain('d5');
+  expect(fact.attacksCentralSquares).not.toContain('d4');
+});
+
+
+it('expone el contador de magia y comunica el bloqueo presupuestario', async () => {
+  const budget = { status: () => ({ dailyPercent: 35, monthSpent: 1 }) };
+  const coach = async () => { throw Object.assign(new Error('Magia agotada'), { code: 'MAGIC_LIMIT', period: 'day' }); };
+  const app = createApp({ coach, budget });
+  const stats = await request(app).get('/api/magic').expect(200);
+  expect(stats.body.dailyPercent).toBe(35);
+  const result = await request(app).post('/api/coach/ask').send(input).expect(429);
+  expect(result.body).toMatchObject({ code: 'MAGIC_LIMIT', period: 'day' });
+});
